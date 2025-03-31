@@ -14,14 +14,7 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async setCurrentRefreshToken(refreshToken: string, userId: string) {
-    const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
-
-    return this.userService.update(userId, {
-      currentHashedRefreshToken,
-    });
-  }
-
+ 
   getCookieForLogOut() {
     return [
       'Authentication=; HttpOnly; Path=/; Max-Age=0',

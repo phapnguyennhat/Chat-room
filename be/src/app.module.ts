@@ -12,12 +12,14 @@ import { AllExceptionsFilter } from './util/all-exception.filter';
 import { createKeyv } from '@keyv/redis';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CACHE_TTL } from './common/constant';
+import { GoogleAuthModule } from './modules/google-auth/google-auth.module';
 
 @Module({
   imports: [
     DatabaseModule,
     AuthModule,
     UserModule,
+    GoogleAuthModule,
     CacheModule.registerAsync({
       isGlobal: true,
       imports: [ConfigModule],

@@ -3,6 +3,7 @@ import {
   Controller,
   HttpCode,
   HttpStatus,
+  Inject,
   Post,
   Req,
   UseGuards,
@@ -16,12 +17,18 @@ import { Request } from 'express';
 import RequestWithUser from 'src/common/requestWithUser.interface';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 import JwtRefreshGuard from './guard/jwtRefresh.guard';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private jwtService: JwtService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+
   ) {}
 
   @Post('register')
@@ -37,6 +44,14 @@ export class AuthController {
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   async logout(@Req() req: RequestWithUser) {
+    const refreshToken = req.cookies.Refresh
+    const { exp } = this.jwtService.decode(refreshToken)
+    const now = Math.floor(Date.now() / 1000);
+    const ttl = exp - now;
+    
+    if (ttl > 0) {
+      await this.cacheManager.set(`blacklist:${refreshToken}`,true, ttl*1000)
+    }
     req.res.setHeader('Set-Cookie', this.authService.getCookieForLogOut());
     return { message: 'Đăng xuất thành công' };
   }
@@ -49,10 +64,7 @@ export class AuthController {
       await this.authService.getCookieWithJwtAccessToken(req.user?.id);
     const refreshTokenCookie =
       await this.authService.getCookieWithJwtRefreshToken(req.user?.id);
-    await this.authService.setCurrentRefreshToken(
-      refreshTokenCookie.token,
-      req.user?.id,
-    );
+    
 
     req.res.setHeader('Set-Cookie', [
       accessTokenCookie.cookie,
