@@ -4,7 +4,7 @@ import spinnerSlice from './features/spinner/spinnerSlice'
 
 export const store = configureStore({
   reducer: {
-    spinner: spinnerSlice
+    spinner: spinnerSlice,
   }
 })
 

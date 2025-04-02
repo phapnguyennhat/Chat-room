@@ -13,6 +13,10 @@ import { createKeyv } from '@keyv/redis';
 import { CacheModule } from '@nestjs/cache-manager';
 import { CACHE_TTL } from './common/constant';
 import { GoogleAuthModule } from './modules/google-auth/google-auth.module';
+import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+import { FileModule } from './modules/file/file.module';
+import { FriendModule } from './modules/friend/friend.module';
+import { SocketModule } from './modules/socket/socket.module';
 
 @Module({
   imports: [
@@ -36,6 +40,10 @@ import { GoogleAuthModule } from './modules/google-auth/google-auth.module';
       validationSchema: validationSchema,
       isGlobal: true,
     }),
+    CloudinaryModule,
+    FileModule,
+    FriendModule,
+    SocketModule,
    
   ],
   controllers: [AppController],
@@ -45,6 +53,7 @@ import { GoogleAuthModule } from './modules/google-auth/google-auth.module';
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
     },
+   
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor

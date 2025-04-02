@@ -10,12 +10,16 @@ export const validationSchema = Joi.object({
   PORT: Joi.number().required(),
 
   JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
-  JWT_ACCESS_TOKEN_EXPIRATION_TIME:Joi.string().required(),
+  JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
   JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
   JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
 
   GOOGLE_AUTH_CLIENT_ID: Joi.string().required(),
   GOOGLE_AUTH_CLIENT_SECRET: Joi.string().required(),
 
-  REDIS_URL : Joi.string().required()
-})
+  CLOUDINARY_CLOUD_NAME: Joi.string().required(),
+  CLOUDINARY_API_KEY: Joi.string().required(),
+  CLOUDINARY_API_SECRET: Joi.string().required(),
+
+  REDIS_URL: Joi.string().required(),
+});

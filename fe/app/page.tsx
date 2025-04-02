@@ -1,10 +1,19 @@
-import Button from "@/components/button";
+import { getProfile } from '@/API/user/query'
+import { redirect } from 'next/navigation'
 
+export default async function HomePage() {
+    const profile = await getProfile()
 
-export default function Home() {
-  return (
+    if (!profile) {
+        redirect('/login')
+    } else {
+        
+        redirect('/message')
+    }
+    
+    return (
     <div>
-      <Button  >Click me</Button>
+      
     </div>
-  );
+  )
 }

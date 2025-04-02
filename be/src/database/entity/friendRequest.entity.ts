@@ -1,8 +1,10 @@
 import { BaseEntity } from "src/common/baseEntity";
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Check, Column, Entity, ManyToOne, Unique } from "typeorm";
 import { User } from "./user.entity";
 
 @Entity()
+@Unique(['senderId', 'receiverId'])
+@Check(`"senderId" != "receiverId"`)
 export class FriendRequest extends BaseEntity  {
     @Column()
     senderId: string

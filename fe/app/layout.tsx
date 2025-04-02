@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
+import GoogleAuthProvider from '@/provider/GoogleAuthProvider';
+import StoreProvider from '@/provider/StoreProvider';
+import Spinner from '@/components/Spinner';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -29,7 +32,11 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
 				<Toaster />
-				{children}
+				<GoogleAuthProvider>
+					<StoreProvider>{children}
+						<Spinner/>
+					</StoreProvider>
+				</GoogleAuthProvider>
 			</body>
 		</html>
 	);

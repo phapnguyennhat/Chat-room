@@ -8,6 +8,4 @@ export class QueryFriendDto extends QueryPagination{
     @IsString()
     @IsOptional()
     keyword: string
-
-
 } 

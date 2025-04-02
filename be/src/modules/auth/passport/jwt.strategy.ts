@@ -3,7 +3,6 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
-import { plainToInstance } from 'class-transformer';
 import { IAuthPayload, User } from 'src/database/entity/user.entity';
 import { UserService } from 'src/modules/user/user.service';
 

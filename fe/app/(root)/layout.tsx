@@ -1,5 +1,6 @@
 import { getProfile } from '@/API/user/query';
 import NavSide from '@/components/NavSide';
+import { SocketProvider } from '@/provider/SocketProvider';
 import { notFound } from 'next/navigation';
 
 export default async function RootLayout({
@@ -12,9 +13,11 @@ export default async function RootLayout({
 		notFound();
 	}
 	return (
-		<main className=" flex flex-row">
-			<NavSide user={profile} />
-			<div className=' ml-[80px]'>{children}</div>
-		</main>
+		<SocketProvider>
+			<main className=" ">
+				<NavSide user={profile} />
+				<div className=" ml-[340px]">{children}</div>
+			</main>
+		</SocketProvider>
 	);
 }

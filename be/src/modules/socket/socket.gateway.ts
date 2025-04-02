@@ -12,7 +12,14 @@ import { Server, Socket } from 'socket.io';
 import { CreateFriendRequestDto } from '../friend/dto/createFriendRequest.dto';
 import { FriendService } from '../friend/friend.service';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: 'http://localhost:3000',
+    // methods: ['GET', 'POST'],
+    // allowedHeaders: ['my-custom-header'],
+    credentials: true,
+  },
+})
 export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
 

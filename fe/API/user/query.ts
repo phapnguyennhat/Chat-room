@@ -26,6 +26,20 @@ export const getProfile = async () => {
 };
 
 
-export const findUserByEmail = async (email: string) => {
-	
+export const findUser = async (query: QueryUser) => {
+	const authCookie = await getAuthCookies()
+	const searchParams = new URLSearchParams(query as any)
+	const response = await fetcher<User[]>(`user?${searchParams.toString()}`, {
+		method: 'GET',
+		headers: {
+			Cookie: authCookie
+		},
+		cache: 'no-cache'
+	})
+
+	if (isErrorResponse(response)) {
+		return [] as User[]
+	}
+	return response
 }
+

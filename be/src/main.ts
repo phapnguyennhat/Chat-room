@@ -19,6 +19,10 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors({
+    origin: configService.get('FRONTEND_URL'), // allow other origin access to API
+    credentials: true, //Access-Control-Allow-Credentials: true response header.
+  });
 
   await app.listen(configService.get('PORT')|| 3000);
 }

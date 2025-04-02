@@ -2,13 +2,13 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthBy, User } from 'src/database/entity/user.entity';
 import { QueryRunner, Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { CreateUserDto } from './dto/createUser.dto';
 import { TokenPayload } from 'google-auth-library';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-
+import { QueryUserDto } from './dto/queryUser.dto';
 
 @Injectable()
 export class UserService {
@@ -62,5 +62,36 @@ export class UserService {
       name: userData.name,
       authBy: AuthBy.GOOGLE,
     });
+  }
+
+  async findUser(userId: string, query: QueryUserDto) {
+    const { page, limit, keyword } = query;
+
+    const queryBuilder = this.userRepo
+      .createQueryBuilder('user')
+      .leftJoin(
+        'user.friendItems',
+        'friendItems',
+        'friendItems.friendId =:userId',
+        { userId },
+      ).leftJoin('user.avatar', 'avatar')
+      .andWhere('user.id !=:userId', { userId })
+      .skip((page - 1) * limit)
+      .take(limit)
+      .orderBy('user.name', 'ASC')
+
+      .select(['user.id', 'user.name', 'user.email','friendItems.id', 'avatar.url']);
+    
+      if (keyword) {
+        queryBuilder.andWhere(
+          'user.name ILIKE :keyword OR user.email ILIKE :keyword',
+          {
+            keyword: `%${keyword}%`,
+          },
+        );
+      }
+
+    const [users, count] = await queryBuilder.getManyAndCount()
+    return {users, count}
   }
 }

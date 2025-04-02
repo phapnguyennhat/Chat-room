@@ -1,7 +1,7 @@
 'use client';
 import { logout } from '@/API/auth/action';
 import { getProfile } from '@/API/user/query';
-import NavSideFriend from '@/app/(root)/friend/components/NavSideFriend';
+import NavSideFriend from '@/components/NavSideFriend';
 import { NOT_FOUND_AVATAR } from '@/common/constant';
 import { setSpinner } from '@/lib/features/spinner/spinnerSlice';
 import { LogOut, MessageSquareText } from 'lucide-react';
@@ -19,7 +19,6 @@ export default function NavSide({ user }: IProps) {
 	const pathname = usePathname();
     const dispatch = useDispatch();
 
-    const [visibleNavFriend, setVisibleNavFriend] = useState(false)
     
 
     
@@ -61,21 +60,20 @@ export default function NavSide({ user }: IProps) {
 						<MessageSquareText size={40} />
 					</Link>
 
-                    <button
-                        onClick={()=>setVisibleNavFriend(prev=>!prev)}
-						
-						className={` rounded-lg p-3 text-white ${
+                    <Link
+						href={'/friend/list'}
+						className={` rounded-lg p-3  text-white ${
 							pathname.startsWith('/friend') && 'bg-slate-600'
 						} `}
 					>
 						<NotebookTabs size={40} />
-					</button>
+					</Link>
 				</div>
 				<button className=" p-3">
 					<LogOut onClick={handleLogout} color="red" size={40} />
 				</button>
-            </aside>
-            <NavSideFriend  visibleNavFriend={visibleNavFriend} setVisibleNavFriend={setVisibleNavFriend} />
+			</aside>
+			<NavSideFriend visible={pathname.startsWith('/friend')} />
 		</>
 	);
 }

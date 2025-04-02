@@ -1,30 +1,17 @@
-'use client';
 
-import { keyWordSchema } from '@/API/user/schema';
 import Button from '@/components/button';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 
-export default function AddFriend() {
-	const {
-		register,
-		setError,
-		formState: { errors },
-		
-		handleSubmit,
-	} = useForm({ resolver: zodResolver(keyWordSchema) });
-
-	const router = useRouter()
-
-	const handleSearch =  (data: {keyword: string}) => {
-		router.replace(`?keyword=${data.keyword}`)
-	};
+interface IProps {
+	searchParams : Promise<QueryUser>
+}
+export default  async function AddFriend({searchParams}: IProps) {
+	
+	const {keyword} = await searchParams
 
 	return (
-		<form onSubmit={handleSubmit(handleSearch)} className=" max-w-sm">
+		<form action={'/friend/search'}  className=" max-w-sm mb-4">
 			<label
-				htmlFor="email"
+				htmlFor="keyword"
 				className=" uppercase block text-sm font-medium leading-6 text-gray-900"
 			>
 				Add friend by name or email
@@ -32,17 +19,14 @@ export default function AddFriend() {
 
 			<div className=" mt-2 flex gap-4">
 				<input
-					{...register('keyword')}
-					placeholder="Name or Email"
+					name='keyword'
+					defaultValue={keyword}
+					placeholder="Search"
 					className=" px-3 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm  sm:leading-6 "
 				/>
 				<Button type="submit">Add</Button>
 			</div>
-			{errors.keyword && (
-				<p className=" text-left text-red-500">
-					{errors.keyword.message}
-				</p>
-			)}
+			
 		</form>
 	);
 }

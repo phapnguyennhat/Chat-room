@@ -72,4 +72,13 @@ export class AuthService {
     };
 
   }
+
+  async getUserByAccessToken(accessToken: string) {
+    const {userId}: IAuthPayload = this.jwtService.verify(accessToken)
+    if (userId) {
+      return this.userService.findById(userId)
+    }
+  }
+
+  
 }
