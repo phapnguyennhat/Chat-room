@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { setSpinner } from '@/lib/features/spinner/spinnerSlice';
 import { isErrorResponse } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -29,6 +30,10 @@ export default function LoginForm() {
 	const dispatch = useDispatch()
 	const router = useRouter()
 
+	const queryClient = useQueryClient()
+
+	
+
 	const handleLogin = async (data: LoginData) => {
 		dispatch(setSpinner(true))
 
@@ -40,6 +45,10 @@ export default function LoginForm() {
 				style: { backgroundColor: 'red', color: 'white' },
 			});
 		} else {
+		
+			queryClient.removeQueries({ queryKey: ['users'], exact: false})
+			queryClient.removeQueries({ queryKey: ['friends'], exact: false})
+			
 			router.replace('/')
 		}
 

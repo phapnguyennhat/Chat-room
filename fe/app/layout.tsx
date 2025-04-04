@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/sonner';
 import GoogleAuthProvider from '@/provider/GoogleAuthProvider';
 import StoreProvider from '@/provider/StoreProvider';
 import Spinner from '@/components/Spinner';
+import ReactQueryProvider from '@/provider/ReactQueryProvider';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -33,8 +34,9 @@ export default function RootLayout({
 			>
 				<Toaster />
 				<GoogleAuthProvider>
-					<StoreProvider>{children}
-						<Spinner/>
+					<StoreProvider>
+						<ReactQueryProvider>{children}</ReactQueryProvider>
+						<Spinner />
 					</StoreProvider>
 				</GoogleAuthProvider>
 			</body>

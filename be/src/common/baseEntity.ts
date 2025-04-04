@@ -6,9 +6,11 @@ export class BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  @Transform(({ value }) => value ? moment(value).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss') : null)
   createAt: Date;
   
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  @Transform(({ value }) => value ? moment(value).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss') : null)
   updateAt: Date;
 }

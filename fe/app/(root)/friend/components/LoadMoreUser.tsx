@@ -60,7 +60,7 @@ export default function LoadMoreUser() {
 
 	return (
 		<div className=" ">
-			<ul className=" gap-4 w-full grid grid-cols-4">
+			<ul className=" gap-4 w-full grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 				{users.map((user, index) => (
 					<li key={index}>
 						<CardUser user={user} />

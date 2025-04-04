@@ -1,9 +1,9 @@
 
 import { Request } from 'express';
-import { User } from 'src/database/entity/user.entity';
+import { IAuthPayload, User } from 'src/database/entity/user.entity';
  
 interface RequestWithUser extends Request {
-  user: User;
+  user: IAuthPayload;
 }
  
 export default RequestWithUser;

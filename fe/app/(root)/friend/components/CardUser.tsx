@@ -1,4 +1,3 @@
-
 import {
 	Card,
 	CardContent,
@@ -7,13 +6,15 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
-import Button from '@/components/button';
 import Image from 'next/image';
 import { NOT_FOUND_AVATAR } from '@/common/constant';
+import Link from 'next/link';
+import ButtonActionUser from './ButtonActionUser';
 
 interface IProps {
 	user: User;
 }
+
 export default function CardUser({ user }: IProps) {
 	return (
 		<Card className="w-full">
@@ -33,9 +34,17 @@ export default function CardUser({ user }: IProps) {
 				</div>
 			</CardContent>
 			<CardFooter>
-				<Button className={`w-full ${user.friendItems.length!==0&& 'bg-transparent border text-slate-900 hover:text-white border-slate-700'} `}  >
-				{ user.friendItems.length ===0?	'Add Friend': "Chat"}
-				</Button>
+				{/* {user.friendItems.length === 0 ? (
+					<ButtonActionUser user={user} />
+				) : (
+					<Link
+						className=" w-full bg-transparent border text-slate-900 hover:text-white border-slate-700"
+						href={`/message/${user.id}`}
+					>
+						Chat
+					</Link>
+				)} */}
+				<ButtonActionUser user={user} />
 			</CardFooter>
 		</Card>
 	);

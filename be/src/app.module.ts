@@ -17,6 +17,7 @@ import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { FileModule } from './modules/file/file.module';
 import { FriendModule } from './modules/friend/friend.module';
 import { SocketModule } from './modules/socket/socket.module';
+import { LogModule } from './modules/log/log.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { SocketModule } from './modules/socket/socket.module';
     FileModule,
     FriendModule,
     SocketModule,
+    LogModule,
    
   ],
   controllers: [AppController],

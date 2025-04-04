@@ -16,9 +16,11 @@ declare global {
 		name: string;
 		id: string;
 		email: string
-		
 		avatar: File;
-		friendItems : FriendItem[]
+		friendItems: FriendItem[]
+		requestReceived: FriendRequest[]
+		requestSent: FriendRequest[]
+
 	}
 
 	interface File {
@@ -39,11 +41,16 @@ declare global {
 
 	interface FriendItem {
 		id: string
+		friend: User
 	}
 
-	
+	interface FriendRequest {
+		senderId: string,
+		sender: User,
+		receiverId: string,
+		receiver: User
+	}
 
-	
 }
 
 

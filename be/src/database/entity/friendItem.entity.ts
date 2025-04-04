@@ -17,4 +17,7 @@ export class FriendItem extends BaseEntity {
 
   @ManyToOne(() => User)
   friend: User;
+
+  @Column({default: false})
+  hasRead: boolean;
 }

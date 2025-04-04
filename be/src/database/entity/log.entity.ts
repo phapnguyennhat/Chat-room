@@ -1,11 +1,12 @@
 import { BaseEntity } from "src/common/baseEntity";
-import { Check, Column, Entity, JoinColumn, ManyToOne, OneToOne, Unique } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { User } from "./user.entity";
 
 @Entity()
-@Unique(['senderId', 'receiverId'])
-@Check(`"senderId" != "receiverId"`)
-export class FriendRequest extends BaseEntity  {
+export class Log extends BaseEntity {
+    @Column()
+    message: string
+    
     @Column()
     senderId: string
 
@@ -16,6 +17,8 @@ export class FriendRequest extends BaseEntity  {
     receiverId: string
 
     @ManyToOne(() => User)
-    receiver: User
+    receiver: User;
 
+    @Column('boolean', { default: false })
+    isRead: boolean
 }

@@ -22,4 +22,6 @@ export const validationSchema = Joi.object({
   CLOUDINARY_API_SECRET: Joi.string().required(),
 
   REDIS_URL: Joi.string().required(),
+
+  FRONTEND_URL: Joi.string().required()
 });

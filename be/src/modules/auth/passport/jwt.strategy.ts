@@ -33,6 +33,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     //   await this.userService.findById(payload.userId),
     // );
     // return user;
-    return this.userService.findById(payload.userId)
+    // return this.userService.findById(payload.userId)
+    return payload
   }
 }

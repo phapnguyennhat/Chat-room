@@ -18,9 +18,7 @@ export class UserService {
   ) {}
 
   async findById(id: string) {
-    return this.cacheManager.wrap(`user-detail:${id}`, () =>
-      this.userRepo.findOneBy({ id }),
-    );
+   return this.userRepo.findOneBy({ id });
   }
 
   async findByEmail(email: string) {
@@ -67,6 +65,7 @@ export class UserService {
   async findUser(userId: string, query: QueryUserDto) {
     const { page, limit, keyword } = query;
 
+
     const queryBuilder = this.userRepo
       .createQueryBuilder('user')
       .leftJoin(
@@ -74,24 +73,50 @@ export class UserService {
         'friendItems',
         'friendItems.friendId =:userId',
         { userId },
-      ).leftJoin('user.avatar', 'avatar')
+      )
+      .leftJoin('user.avatar', 'avatar')
+      .leftJoin(
+        'user.requestReceived',
+        'requestReceived',
+        'requestReceived.senderId =:userId',
+        { userId },
+      )
+      .leftJoin(
+        'user.requestSent',
+        'requestSent',
+        'requestSent.receiverId=:userId',
+        { userId },
+      )
+
       .andWhere('user.id !=:userId', { userId })
       .skip((page - 1) * limit)
       .take(limit)
       .orderBy('user.name', 'ASC')
 
-      .select(['user.id', 'user.name', 'user.email','friendItems.id', 'avatar.url']);
-    
-      if (keyword) {
-        queryBuilder.andWhere(
-          'user.name ILIKE :keyword OR user.email ILIKE :keyword',
-          {
-            keyword: `%${keyword}%`,
-          },
-        );
-      }
+      .select([
+        'user.id',
+        'user.name',
+        'user.email',
+        'friendItems.id',
+        'avatar.url',
+        'requestReceived.id',
+        'requestSent.id',
+      ]);
 
-    const [users, count] = await queryBuilder.getManyAndCount()
-    return {users, count}
+    if (keyword) {
+      queryBuilder.andWhere(
+        '( user.name ILIKE :keyword OR user.email ILIKE :keyword )',
+        {
+          keyword: `%${keyword}%`,
+        },
+      );
+    }
+
+    const [data, count] = await queryBuilder.getManyAndCount();
+    const numPage = Math.ceil(count / limit)
+    if (page + 1 > numPage) {
+      return {data, currentPage:page, nextPage: null}
+    }
+    return {data, currentPage: page, nextPage: page+1}
   }
 }

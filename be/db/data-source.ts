@@ -17,7 +17,7 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
       // database: configService.get('POSTGRES_DB'),
       entities: ['dist/**/*.entity.js'],
       synchronize: true,
-      logging: true,
+      // logging: true,
       migrations: ['dist/db/migrations/*.js'],
       ssl: true
     };

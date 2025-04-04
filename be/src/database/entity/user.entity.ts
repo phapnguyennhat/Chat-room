@@ -13,6 +13,7 @@ import {
 import { BaseEntity } from 'src/common/baseEntity';
 import { File } from './file.entity';
 import { FriendItem } from './friendItem.entity';
+import { FriendRequest } from './friendRequest.entity';
 
 export enum AuthBy {
   GOOGLE = 'GOOGLE',
@@ -33,7 +34,13 @@ export enum ERole {
 }
 
 export interface IAuthPayload {
-  userId: string;
+  id: string;
+  name: string,
+  username: string,
+  email: string,
+  role: ERole,
+  avatar: File
+  exp?:number
 }
 
 @Entity()
@@ -73,5 +80,13 @@ export class User extends BaseEntity {
 
   @OneToMany(() => FriendItem, (friendItem: FriendItem)=>friendItem.user)
   friendItems: FriendItem[]
+
+  @OneToMany(() => FriendRequest, (friendRequest) => friendRequest.sender)
+  requestSent: FriendRequest[]
+  
+  @OneToMany(() => FriendRequest, (friendRequest) => friendRequest.receiver)
+  requestReceived: FriendRequest[]
+  
+  socketId: string
 
 }
